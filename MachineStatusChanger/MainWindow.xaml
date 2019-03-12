@@ -14,10 +14,10 @@
             <Setter Property="Padding" Value="5"/>
         </Style>
         <Style x:Key="TitleLabelStyle" TargetType="Label">
-            <Setter Property="FontSize" Value="24" />
+            <Setter Property="FontSize" Value="20" />
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="HorizontalContentAlignment" Value="Center" />
-            <Setter Property="Padding" Value="5"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
         </Style>
         <Style x:Key="BaseButtonStyle" TargetType="Button">
             <Setter Property="FontSize" Value="30"/>
@@ -36,62 +36,78 @@
             <Setter Property="Foreground" Value="Black"/>
         </Style>
     </Window.Resources>
-    <Grid x:Name="rootGrid" Background="Black">
+    <Grid Background="Black">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="2*"/>
             <ColumnDefinition Width="3*"/>
-            <ColumnDefinition Width="3*"/>
-            <ColumnDefinition Width="3*"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="3*"/>
-            <ColumnDefinition Width="3*"/>
-            <ColumnDefinition Width="3*"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="2*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="3*"/>
-            <RowDefinition Height="3*"/>
-            <RowDefinition Height="3*"/>
-            <RowDefinition Height="3*"/>
-            <RowDefinition Height="3*"/>
-            <RowDefinition Height="3*"/>
-            <RowDefinition Height="3*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="9*"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Label Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" Content="マシンNo." Background="Navy" Style="{StaticResource TitleLabelStyle}" />
+        <Grid Margin="30 10 15 5">
+            <Label Content="マシンNo." Background="Navy" Style="{StaticResource TitleLabelStyle}" />
+        </Grid>
 
-        <Label Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="3" Content="M" Background="DarkGray" Style="{StaticResource BaseLabelStyle}"/>
-        <Label Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="3" Content="インライン1号" Background="AntiqueWhite" Style="{StaticResource BaseLabelStyle}"/>
+        <Grid x:Name="InputGrid" Grid.Row="1" Grid.Column="0" Margin="30 10 15 10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="2*"/>
+                <RowDefinition Height="2*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="3*"/>
+                <RowDefinition Height="3*"/>
+                <RowDefinition Height="3*"/>
+                <RowDefinition Height="3*"/>
+            </Grid.RowDefinitions>
 
-        <Button Grid.Row="6" Grid.Column="1" Content="7" Style="{StaticResource ButtonStyleNum}"/>
-        <Button Grid.Row="6" Grid.Column="2" Content="8" Style="{StaticResource ButtonStyleNum}"/>
-        <Button Grid.Row="6" Grid.Column="3" Content="9" Style="{StaticResource ButtonStyleNum}"/>
-        <Button Grid.Row="7" Grid.Column="1" Content="4" Style="{StaticResource ButtonStyleNum}"/>
-        <Button Grid.Row="7" Grid.Column="2" Content="5" Style="{StaticResource ButtonStyleNum}"/>
-        <Button Grid.Row="7" Grid.Column="3" Content="6" Style="{StaticResource ButtonStyleNum}"/>
-        <Button Grid.Row="8" Grid.Column="1" Content="1" Style="{StaticResource ButtonStyleNum}"/>
-        <Button Grid.Row="8" Grid.Column="2" Content="2" Style="{StaticResource ButtonStyleNum}"/>
-        <Button Grid.Row="8" Grid.Column="3" Content="3" Style="{StaticResource ButtonStyleNum}"/>
-        <Button Grid.Row="9" Grid.Column="1" Content="0" Style="{StaticResource ButtonStyleNum}"/>
-        <Button Grid.Row="9" Grid.Column="2" Content="BS" Style="{StaticResource ButtonStyleFunc}"/>
-        <Button Grid.Row="9" Grid.Column="3" Content="CLR" Style="{StaticResource ButtonStyleFunc}"/>
+            <Label x:Name="MachineNoLabel" Grid.Row="0" Grid.ColumnSpan="3" Content="M" Background="DarkGray" Style="{StaticResource BaseLabelStyle}"/>
+            <Label Grid.Row="1" Grid.ColumnSpan="3" Content="インライン1号" Background="AntiqueWhite" Style="{StaticResource BaseLabelStyle}"/>
 
-        <Label Grid.Row="1" Grid.Column="5" Grid.ColumnSpan="5" Content="変更" Background="Navy" Style="{StaticResource TitleLabelStyle}"/>
+            <Button Grid.Row="3" Grid.Column="0" Content="7" Style="{StaticResource ButtonStyleNum}"/>
+            <Button Grid.Row="3" Grid.Column="1" Content="8" Style="{StaticResource ButtonStyleNum}"/>
+            <Button Grid.Row="3" Grid.Column="2" Content="9" Style="{StaticResource ButtonStyleNum}"/>
+            <Button Grid.Row="4" Grid.Column="0" Content="4" Style="{StaticResource ButtonStyleNum}"/>
+            <Button Grid.Row="4" Grid.Column="1" Content="5" Style="{StaticResource ButtonStyleNum}"/>
+            <Button Grid.Row="4" Grid.Column="2" Content="6" Style="{StaticResource ButtonStyleNum}"/>
+            <Button Grid.Row="5" Grid.Column="0" Content="1" Style="{StaticResource ButtonStyleNum}"/>
+            <Button Grid.Row="5" Grid.Column="1" Content="2" Style="{StaticResource ButtonStyleNum}"/>
+            <Button Grid.Row="5" Grid.Column="2" Content="3" Style="{StaticResource ButtonStyleNum}"/>
+            <Button Grid.Row="6" Grid.Column="0" Content="0" Style="{StaticResource ButtonStyleNum}"/>
+            <Button Grid.Row="6" Grid.Column="1" Content="BS" Style="{StaticResource ButtonStyleFunc}"/>
+            <Button Grid.Row="6" Grid.Column="2" Content="CLR" Style="{StaticResource ButtonStyleFunc}"/>
+        </Grid>
 
-        <Button Grid.Row="3" Grid.Column="5" Grid.ColumnSpan="5" Content="正常化" Style="{StaticResource ButtonStyleState}"/>
-        <Button Grid.Row="4" Grid.Column="5" Grid.ColumnSpan="5" Content="メンテナンス" Style="{StaticResource ButtonStyleState}"/>
-        <Button Grid.Row="5" Grid.Column="5" Grid.ColumnSpan="5" Content="故障" Style="{StaticResource ButtonStyleState}"/>
-        <Button Grid.Row="6" Grid.Column="5" Grid.ColumnSpan="5" Content="条件出し" Style="{StaticResource ButtonStyleState}"/>
-        <Button Grid.Row="7" Grid.Column="5" Grid.ColumnSpan="5" Content="計画停止" Style="{StaticResource ButtonStyleState}"/>
-        <Button Grid.Row="8" Grid.Column="5" Grid.ColumnSpan="5" Content="簡易オンライン" Style="{StaticResource ButtonStyleState}"/>
+        <Grid Grid.Column="1" Margin="15 10 30 5">
+            <Label Content="変更" Background="Navy" Style="{StaticResource TitleLabelStyle}" />
+        </Grid>
 
+        <Grid Grid.Row="1" Grid.Column="1" Margin="15 10 30 10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Button Grid.Row="0" Content="正常化" Style="{StaticResource ButtonStyleState}"/>
+            <Button Grid.Row="1" Content="メンテナンス" Style="{StaticResource ButtonStyleState}"/>
+            <Button Grid.Row="2" Content="故障" Style="{StaticResource ButtonStyleState}"/>
+            <Button Grid.Row="3" Content="条件出し" Style="{StaticResource ButtonStyleState}"/>
+            <Button Grid.Row="4" Content="計画停止" Style="{StaticResource ButtonStyleState}"/>
+            <Button Grid.Row="5" Content="簡易オンライン" Style="{StaticResource ButtonStyleState}"/>
+        </Grid>
+
+        <Grid Grid.Row="2" Grid.ColumnSpan="2">
+
+        </Grid>
     </Grid>
 </Window>

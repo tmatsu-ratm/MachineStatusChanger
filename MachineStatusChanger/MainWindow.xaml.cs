@@ -23,11 +23,13 @@ namespace MachineStatusChanger
         public MainWindow()
         {
             InitializeComponent();
+
+            InitEvents();
         }
 
         private void InitEvents()
         {
-            foreach (var ctrl in LogicalTreeHelper.GetChildren(rootGrid))
+            foreach (var ctrl in LogicalTreeHelper.GetChildren(InputGrid))
             {
                 if (!(ctrl is Button))
                 {
@@ -35,10 +37,27 @@ namespace MachineStatusChanger
                 }
 
                 (ctrl as Button).Click += (sender, e) =>
-                {                    
-                }
+                {
+                    string inKey = (sender as Button).Content.ToString();
+                    switch (inKey)
+                    {
+                        case "CLR":
+                            MachineNoLabel.Content = "M";
+                            break;
+                        case "BS":
+                            if (MachineNoLabel.Content.ToString().Length > 1)
+                            {
+                                MachineNoLabel.Content = MachineNoLabel.Content.ToString()
+                                    .Remove(MachineNoLabel.Content.ToString().Length - 1);
+                            }
+
+                            break;
+                        default:
+                            MachineNoLabel.Content += inKey;
+                            break;
+                    }
+                };
             }
         }
     }
-
 }
