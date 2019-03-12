@@ -68,7 +68,7 @@
             </Grid.RowDefinitions>
 
             <Label x:Name="MachineNoLabel" Grid.Row="0" Grid.ColumnSpan="3" Content="M" Background="DarkGray" Style="{StaticResource BaseLabelStyle}"/>
-            <Label Grid.Row="1" Grid.ColumnSpan="3" Content="インライン1号" Background="AntiqueWhite" Style="{StaticResource BaseLabelStyle}"/>
+            <Label x:Name="MachineNameLabel" Grid.Row="1" Grid.ColumnSpan="3" Content="" Background="AntiqueWhite" Style="{StaticResource BaseLabelStyle}"/>
 
             <Button Grid.Row="3" Grid.Column="0" Content="7" Style="{StaticResource ButtonStyleNum}"/>
             <Button Grid.Row="3" Grid.Column="1" Content="8" Style="{StaticResource ButtonStyleNum}"/>

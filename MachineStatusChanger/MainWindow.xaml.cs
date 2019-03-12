@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Odbc;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -43,6 +44,7 @@ namespace MachineStatusChanger
                     {
                         case "CLR":
                             MachineNoLabel.Content = "M";
+                            ClearMachineName();
                             break;
                         case "BS":
                             if (MachineNoLabel.Content.ToString().Length > 1)
@@ -50,13 +52,49 @@ namespace MachineStatusChanger
                                 MachineNoLabel.Content = MachineNoLabel.Content.ToString()
                                     .Remove(MachineNoLabel.Content.ToString().Length - 1);
                             }
-
+                            ClearMachineName();
                             break;
                         default:
                             MachineNoLabel.Content += inKey;
+                            if (MachineNoLabel.Content.ToString().Length == 6)
+                            {
+                                Dbaccess(MachineNoLabel.Content.ToString());
+//                                MachineNoLabel.Content = "M";
+                            }
+                            else
+                            {
+                                ClearMachineName();
+                            }
                             break;
                     }
                 };
+            }
+        }
+
+        private void ClearMachineName()
+        {
+            MachineNameLabel.Content = "";
+        }
+
+        private void Dbaccess(string machineNo)
+        {
+            OdbcConnection con = new OdbcConnection("Dsn=TestDataSource;id=sa;Pwd=3141592;DataBase=eqstatdb;");
+            con.Open();
+            try
+            {
+                string q = "select MACHINE_NAME from Status where MACHINE_NO='" + machineNo + "'";
+                OdbcCommand oc = new OdbcCommand(q, con);
+                OdbcDataReader odr = oc.ExecuteReader();
+                MachineNameLabel.Content = "Machine No.異常";
+                while (odr.Read() == true)
+                {
+                    MachineNameLabel.Content = ((string) odr[0]).Trim();
+                }
+                odr.Close();
+            }
+            finally
+            {
+                con.Close();
             }
         }
     }
