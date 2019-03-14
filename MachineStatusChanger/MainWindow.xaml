@@ -34,6 +34,7 @@
         <Style x:Key="ButtonStyleState" TargetType="Button" BasedOn="{StaticResource BaseButtonStyle}">
             <Setter Property="Background" Value="WhiteSmoke"/>
             <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="IsEnabled" Value="False"/>
         </Style>
     </Window.Resources>
     <Grid Background="Black">
@@ -98,12 +99,12 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <Button Grid.Row="0" Content="正常化" Style="{StaticResource ButtonStyleState}"/>
-            <Button Grid.Row="1" Content="メンテナンス" Style="{StaticResource ButtonStyleState}"/>
-            <Button Grid.Row="2" Content="故障" Style="{StaticResource ButtonStyleState}"/>
-            <Button Grid.Row="3" Content="条件出し" Style="{StaticResource ButtonStyleState}"/>
-            <Button Grid.Row="4" Content="計画停止" Style="{StaticResource ButtonStyleState}"/>
-            <Button Grid.Row="5" Content="簡易オンライン" Style="{StaticResource ButtonStyleState}"/>
+            <Button x:Name="S1Button" Grid.Row="0" Content="正常化" Style="{StaticResource ButtonStyleState}" Click="S1Button_Click"/>
+            <Button x:Name="S2Button" Grid.Row="1" Content="メンテナンス" Style="{StaticResource ButtonStyleState}" Click="S2Button_Click"/>
+            <Button x:Name="S3Button" Grid.Row="2" Content="故障" Style="{StaticResource ButtonStyleState}" Click="S3Button_Click"/>
+            <Button x:Name="S4Button" Grid.Row="3" Content="条件出し" Style="{StaticResource ButtonStyleState}" Click="S4Button_Click"/>
+            <Button x:Name="S5Button" Grid.Row="4" Content="計画停止" Style="{StaticResource ButtonStyleState}" Click="S5Button_Click"/>
+            <Button x:Name="S6Button" Grid.Row="5" Content="簡易オンライン" Style="{StaticResource ButtonStyleState}" Click="S6Button_Click"/>
         </Grid>
 
         <Grid Grid.Row="2" Grid.ColumnSpan="2">
