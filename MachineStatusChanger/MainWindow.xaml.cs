@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Configuration;
 
 namespace MachineStatusChanger
 {
@@ -22,11 +23,52 @@ namespace MachineStatusChanger
     /// </summary>
     public partial class MainWindow : Window
     {
+        private static readonly string MachineNoRowName = "MACHI_NAME";
+        private static readonly string MachineNameRowName = "MACHINE_NAME";
+        private static readonly string MachineSateRowName = "MACHINE_FLG2";
+        private static readonly int MachineNoLength = 6;
+        private string dsn;
+        private string dbn;
+        private string uid;
+        private string pas;
+        private string tbl;
+        private int pfLength;
+        private string prefixString;
+
         public MainWindow()
         {
             InitializeComponent();
 
+            SetParameter();
+
             InitEvents();
+        }
+
+        private void SetParameter()
+        {
+            dsn = ConfigurationManager.AppSettings["DSN"];
+            dbn = ConfigurationManager.AppSettings["Database"];
+            uid = ConfigurationManager.AppSettings["User"];
+            pas = ConfigurationManager.AppSettings["Password"];
+            tbl = ConfigurationManager.AppSettings["Table"];
+            string fabName = ConfigurationManager.AppSettings["Fab"];
+            if (fabName == "L")
+            {
+                pfLength = 2;
+                prefixString = "ML";
+            }
+            else if (fabName == "B")
+            {
+                pfLength = 2;
+                prefixString = "MB";
+            }
+            else
+            {
+                pfLength = 1;
+                prefixString = "M";
+            }
+
+            MachineNoLabel.Content = prefixString;
         }
 
         private void InitEvents()
@@ -44,11 +86,11 @@ namespace MachineStatusChanger
                     switch (inKey)
                     {
                         case "CLR":
-                            MachineNoLabel.Content = "M";
+                            MachineNoLabel.Content = prefixString;
                             ClearMachineName();
                             break;
                         case "BS":
-                            if (MachineNoLabel.Content.ToString().Length > 1)
+                            if (MachineNoLabel.Content.ToString().Length > pfLength)
                             {
                                 MachineNoLabel.Content = MachineNoLabel.Content.ToString()
                                     .Remove(MachineNoLabel.Content.ToString().Length - 1);
@@ -56,11 +98,14 @@ namespace MachineStatusChanger
                             ClearMachineName();
                             break;
                         default:
+                            if (MachineNoLabel.Content.ToString().Length >= MachineNoLength)
+                            {
+                                break;
+                            }
                             MachineNoLabel.Content += inKey;
-                            if (MachineNoLabel.Content.ToString().Length == 6)
+                            if (MachineNoLabel.Content.ToString().Length == MachineNoLength)
                             {
                                 Dbaccess(MachineNoLabel.Content.ToString());
-//                                MachineNoLabel.Content = "M";
                             }
                             else
                             {
@@ -82,13 +127,23 @@ namespace MachineStatusChanger
         {
             OdbcDbIf db = new OdbcDbIf();
             DataTable tb;
-            db.Connect("TestDataSource", "eqstatdb", "sa", "3141592", -1);
-            string q = "select MACHINE_NAME,MACHINE_STR from Status where MACHINE_NO='" + machineNo + "'";
+            db.Connect( dsn, dbn, uid , pas, -1);
+        
+            string q = $"select {MachineNameRowName},{MachineSateRowName} from {tbl} where {MachineNoRowName}='{machineNo}'";
+  
             tb = db.ExecuteSql(q, -1);
             if (tb.Rows.Count > 0)
             {
-                MachineNameLabel.Content = tb.Rows[0]["MACHINE_NAME"].ToString().Trim();
-                int state = (int)(tb.Rows[0]["MACHINE_STR"]);
+                MachineNameLabel.Content = tb.Rows[0][MachineNameRowName].ToString().Trim();
+                int state;
+                if (int.TryParse(tb.Rows[0][MachineSateRowName].ToString(), out state))
+                {
+
+                }
+                else
+                {
+                    state = 0;
+                }
                 ChangeStateButton(true, state);
             }
             else
@@ -103,9 +158,10 @@ namespace MachineStatusChanger
         private void UpdateState(string machineNo, int state)
         {
             OdbcDbIf db = new OdbcDbIf();
-            db.Connect("TestDataSource", "eqstatdb", "sa", "3141592", -1);
+            db.Connect(dsn, dbn, uid, pas, -1);
             db.BeginTransaction();
-            string q = "update Status set MACHINE_STR=" + state + " where MACHINE_NO='" + machineNo + "'";
+            string q = $"update {tbl} set {MachineSateRowName}='{state.ToString()}' where {MachineNoRowName}='{machineNo}'";
+
             db.ExecuteSql(q, -1);
             db.CommitTransaction();
             db.Disconnect();
@@ -122,25 +178,41 @@ namespace MachineStatusChanger
             S5Button.IsEnabled = isEnable;
             S6Button.IsEnabled = isEnable;
 
+            if (isEnable)
+            {
+                S1Button.Background = Brushes.WhiteSmoke;
+                S2Button.Background = Brushes.WhiteSmoke;
+                S3Button.Background = Brushes.WhiteSmoke;
+                S4Button.Background = Brushes.WhiteSmoke;
+                S5Button.Background = Brushes.WhiteSmoke;
+                S6Button.Background = Brushes.WhiteSmoke;
+            }
+
             switch (currentState)
             {
                 case 1:
-                    S1Button.IsEnabled = false;
+//                    S1Button.IsEnabled = false;
+                    S1Button.Background = Brushes.GreenYellow;
                     break;
                 case 2:
-                    S2Button.IsEnabled = false;
+                    //                    S2Button.IsEnabled = false;
+                    S2Button.Background = Brushes.Purple;
                     break;
                 case 3:
-                    S3Button.IsEnabled = false;
+                    //                    S3Button.IsEnabled = false;
+                    S3Button.Background = Brushes.Red;
                     break;
                 case 4:
-                    S4Button.IsEnabled = false;
+                    //                    S4Button.IsEnabled = false;
+                    S4Button.Background = Brushes.Aqua;
                     break;
                 case 5:
-                    S5Button.IsEnabled = false;
+                    //                    S5Button.IsEnabled = false;
+                    S5Button.Background = Brushes.DarkGray;
                     break;
                 case 6:
-                    S6Button.IsEnabled = false;
+                    //                    S6Button.IsEnabled = false;
+                    S6Button.Background = Brushes.DimGray;
                     break;
                 default:
                     break;
