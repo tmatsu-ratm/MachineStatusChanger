@@ -27,6 +27,8 @@ namespace MachineStatusChanger
         private static readonly string MachineNameRowName = "MACHINE_NAME";
         private static readonly string MachineSateRowName = "MACHINE_FLG2";
         private static readonly int MachineNoLength = 6;
+        private static readonly string[] stateString = { "不明","正常化", "メンテナンス", "故障", "条件出し", "計画停止", "簡易オンライン" };
+        
         private string dsn;
         private string dbn;
         private string uid;
@@ -34,6 +36,7 @@ namespace MachineStatusChanger
         private string tbl;
         private int pfLength;
         private string prefixString;
+        private int oldStatus = 0;
 
         public MainWindow()
         {
@@ -144,6 +147,8 @@ namespace MachineStatusChanger
                 {
                     state = 0;
                 }
+
+                oldStatus = state;
                 ChangeStateButton(true, state);
             }
             else
@@ -165,6 +170,10 @@ namespace MachineStatusChanger
             db.ExecuteSql(q, -1);
             db.CommitTransaction();
             db.Disconnect();
+
+            String logmessage = $"{machineNo}:【{stateString[oldStatus]}】 → 【{stateString[state]}】 ";
+
+            MyLog.WriteTraceLog(logmessage);
 
             Dbaccess(machineNo);
         }
