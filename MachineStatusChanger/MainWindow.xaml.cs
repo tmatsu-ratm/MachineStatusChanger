@@ -15,6 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Configuration;
+using System.Security.Authentication.ExtendedProtection;
 
 namespace MachineStatusChanger
 {
@@ -35,7 +36,7 @@ namespace MachineStatusChanger
         private string pas;
         private string tbl;
         private int pfLength;
-        private string prefixString;
+        private string prefixString = "M";
         private int oldStatus = 0;
 
         public MainWindow()
@@ -54,23 +55,6 @@ namespace MachineStatusChanger
             uid = ConfigurationManager.AppSettings["User"];
             pas = ConfigurationManager.AppSettings["Password"];
             tbl = ConfigurationManager.AppSettings["Table"];
-            string fabName = ConfigurationManager.AppSettings["Fab"];
-            if (fabName == "L")
-            {
-                pfLength = 2;
-                prefixString = "ML";
-            }
-            else if (fabName == "B")
-            {
-                pfLength = 2;
-                prefixString = "MB";
-            }
-            else
-            {
-                pfLength = 1;
-                prefixString = "M";
-            }
-
             MachineNoLabel.Content = prefixString;
         }
 
@@ -99,6 +83,43 @@ namespace MachineStatusChanger
                                     .Remove(MachineNoLabel.Content.ToString().Length - 1);
                             }
                             ClearMachineName();
+                            break;
+                        case "L":
+                        case "B":
+                            if (MachineNoLabel.Content.ToString().Length >= MachineNoLength)
+                            {
+                                break;
+                            }
+
+                            if (MachineNoLabel.Content.ToString().Length > 1)
+                            {
+                                string chk = MachineNoLabel.Content.ToString();
+                                if (chk[1] == 'L' || chk[1] == 'B')
+                                {
+                                    MachineNoLabel.Content = MachineNoLabel.Content.ToString().Remove(1, 1);
+                                }
+                            }
+                            
+                            MachineNoLabel.Content = MachineNoLabel.Content.ToString().Insert(1,inKey);
+                            
+                            if (MachineNoLabel.Content.ToString().Length == MachineNoLength)
+                            {
+                                Dbaccess(MachineNoLabel.Content.ToString());
+                            }
+                            else
+                            {
+                                ClearMachineName();
+                            }                               
+                            break;
+                        case "V":
+                            if (MachineNoLabel.Content.ToString().Length > 1)
+                            {
+                                string chk = MachineNoLabel.Content.ToString();
+                                if (chk[1] == 'L' || chk[1] == 'B')
+                                {
+                                    MachineNoLabel.Content = MachineNoLabel.Content.ToString().Remove(1, 1);
+                                }
+                            }
                             break;
                         default:
                             if (MachineNoLabel.Content.ToString().Length >= MachineNoLength)
